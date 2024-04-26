@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: password
+    url: jdbc:postgresql://localhost:5432/userDB?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        order_inserts: true
+        jdbc:
+          batch_size: 50000
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+  application:
+    name: user-service
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate:
+      SQL: DEBUG

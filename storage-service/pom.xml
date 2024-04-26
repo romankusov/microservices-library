@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from com.librarymicroservices.userservice.repository -->
     </parent>
     <groupId>com.librarymicroservices</groupId>
     <artifactId>storage-service</artifactId>

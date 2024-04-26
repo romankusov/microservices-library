@@ -14,7 +14,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.1.10</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from com.librarymicroservices.userservice.repository -->
 	</parent>
 	<groupId>com.library-microservices</groupId>
 	<artifactId>root-project</artifactId>
