@@ -14,14 +14,11 @@ public class UserDTO {
     private String name;
     private Boolean isTaken;
 
-
-    public static UserDTO fromModel(UserEntity userEntity)
-    {
+    public static UserDTO fromModel(UserEntity userEntity) {
         return new UserDTO(userEntity.getId(), userEntity.getName(), userEntity.getIsBookTaken());
     }
 
-    public static UserEntity fromDTO(UserDTO userDTO)
-    {
+    public static UserEntity toEntity(UserDTO userDTO) {
         return new UserEntity(userDTO.getId(), userDTO.getName(), userDTO.getIsTaken());
     }
 }

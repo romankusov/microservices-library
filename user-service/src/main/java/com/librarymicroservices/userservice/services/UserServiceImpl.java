@@ -3,54 +3,56 @@ package com.librarymicroservices.userservice.services;
 import com.librarymicroservices.userservice.dto.UserDTO;
 import com.librarymicroservices.userservice.model.UserEntity;
 import com.librarymicroservices.userservice.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public UserDTO createUser(String name) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setName(name);
-        userEntity.setIsBookTaken(false);
-        return UserDTO.fromModel(userRepository.save(userEntity));
+    @Transactional(readOnly = true)
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream().map(UserDTO::fromModel).toList();
     }
+
     @Override
-    public boolean deleteUser(String name) {
-        return userRepository.deleteByName(name) > 0;
+    @Transactional(readOnly = true)
+    public Optional<UserDTO> getUserById(Long id) {
+        return userRepository.findById(id).map(UserDTO::fromModel);
+    }
+
+    @Override
+    public boolean updateUser(UserDTO userDTO) {
+        if (userRepository.findById(userDTO.getId()).isEmpty()) {
+            return false;
+        }
+        userRepository.save(UserDTO.toEntity(userDTO));
+        return true;
+    }
+
+    @Override
+    public UserDTO createUser(UserDTO userDTO) {
+        UserEntity user = UserDTO.toEntity(userDTO);
+        user.setIsBookTaken(false);
+        return UserDTO.fromModel(userRepository.save(user));
+    }
+
+    @Override
+    public boolean deleteUser(Long id) {
+        return userRepository.customDeleteById(id) > 0;
     }
 
     @Override
     public boolean checkIsBookTaken(UserDTO userDTO) {
-        Optional<UserEntity> userEntityOptional = userRepository.findByName(userDTO.getName());
-        if (userEntityOptional.isPresent())
-        {
-            return userEntityOptional.get().getIsBookTaken();
-        }
-        return false;
-    }
-
-    @Override
-    public List<UserDTO> getAllUsers() {
-        List<UserDTO> userDTOList = new ArrayList<>();
-        List<UserEntity> userEntityList = userRepository.findAll();
-        userEntityList.forEach(userE -> userDTOList.add(UserDTO.fromModel(userE)));
-        return userDTOList;
-    }
-
-    @Override
-    public UserDTO getUserById(Long id) {
-        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
-        return userEntityOptional.map(UserDTO::fromModel).orElse(null);
+        Optional<UserEntity> user = userRepository.findById(userDTO.getId());
+        return user.isPresent() ? user.get().getIsBookTaken() : false;
     }
 }

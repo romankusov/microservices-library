@@ -12,9 +12,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         order_inserts: true
         jdbc:
-          batch_size: 50000
+          batch_size: 50
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: false
   application:
     name: user-service
