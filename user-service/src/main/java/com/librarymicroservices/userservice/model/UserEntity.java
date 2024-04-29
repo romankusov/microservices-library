@@ -1,6 +1,5 @@
 package com.librarymicroservices.userservice.model;
 
-import com.librarymicroservices.userservice.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "user")
+@Table(name = "users")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +22,4 @@ public class UserEntity {
 
     @Column(name = "is_book_taken", nullable = false)
     private Boolean isBookTaken;
-
-    public UserEntity(String name)
-    {
-        this.name = name;
-        this.isBookTaken = false;
-    }
 }

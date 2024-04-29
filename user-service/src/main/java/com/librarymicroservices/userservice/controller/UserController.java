@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         UserDTO user = userService.createUser(userDTO);
-        return ResponseEntity.created(URI.create("/api/users/" + user.getId())).body(userDTO);
+        return ResponseEntity.created(URI.create("/api/users/" + user.getId())).body(user);
     }
 
     @DeleteMapping("/{id}")

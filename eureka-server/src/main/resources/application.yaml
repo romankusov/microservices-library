@@ -1,6 +1,6 @@
 server:
-  port: 8081
+  port: 8761
 
 spring:
   application:
-    name: eserver
+    name: eureka-server
