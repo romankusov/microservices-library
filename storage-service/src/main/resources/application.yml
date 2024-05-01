@@ -1,0 +1,26 @@
+server:
+  port: 8086
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: 7oDEsqeK8lhczbEaXu4i
+    url: jdbc:postgresql://localhost:5432/postgres?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        order_inserts: true
+        jdbc:
+          batch_size: 50
+        show_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  application:
+    name: user-service
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate:
+      SQL: DEBUG
