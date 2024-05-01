@@ -3,12 +3,16 @@ package com.librarymicroservices.orderservice.controller;
 import com.librarymicroservices.orderservice.dto.OrderDto;
 import com.librarymicroservices.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,13 +36,16 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
-        OrderDto order = orderService.createOrder(orderDto);
-        return ResponseEntity.created(URI.create("api/orders/" + order.getId())).body(order);
+    public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto) {
+        Optional<Long> createdOrder = orderService.createOrder(orderDto);
+        return createdOrder.isPresent() ?
+                ResponseEntity.created(URI.create("api/orders/" + createdOrder.get())).build() :
+                ResponseEntity.of(ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(HttpStatus.FORBIDDEN.value()),
+                        "Book is taken or book quantity is not enough")).build();
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateOrder(@RequestBody OrderDto orderDto) {
-        return orderService.updateOrder(orderDto) ? ResponseEntity.accepted().build() : ResponseEntity.notFound().build();
+    @PostMapping("/return/{id}")
+    public ResponseEntity<Void> returnBook(@PathVariable Long id) {
+        return orderService.returnBook(id) ? ResponseEntity.accepted().build() : ResponseEntity.notFound().build();
     }
 }

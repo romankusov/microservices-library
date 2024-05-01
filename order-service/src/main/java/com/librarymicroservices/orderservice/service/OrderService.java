@@ -3,6 +3,7 @@ package com.librarymicroservices.orderservice.service;
 import com.librarymicroservices.orderservice.client.StorageServiceClient;
 import com.librarymicroservices.orderservice.client.UserServiceClient;
 import com.librarymicroservices.orderservice.dto.OrderDto;
+import com.librarymicroservices.orderservice.model.Order;
 import com.librarymicroservices.orderservice.model.OrderStatus;
 import com.librarymicroservices.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,31 +33,33 @@ public class OrderService {
         return orderRepository.findById(id).map(OrderDto::fromModel);
     }
 
-    public boolean updateOrder(OrderDto orderDto) {
-        if (orderRepository.findById(orderDto.getId()).isEmpty()) {
-            return false;
-        } else {
-            if (orderDto.getOrderStatus().equals(OrderStatus.RETURNED)) {
-                storageServiceClient.returnBook(orderDto.getBookId());
-                userServiceClient.resetBookTaken(orderDto.getBookId());
+    public boolean returnBook(Long orderId) {
+        return orderRepository.findById(orderId).map(order -> {
+            if (order.getOrderStatus().equals(OrderStatus.RETURNED)) {
+                return false;
+            } else {
+                storageServiceClient.returnBook(order.getBookId());
+                userServiceClient.resetBookTaken(order.getUserId());
+                order.setOrderStatus(OrderStatus.RETURNED);
+                orderRepository.save(order);
+                return true;
             }
-            orderRepository.save(OrderDto.toModel(orderDto));
-            return true;
-        }
+        }).orElse(false);
     }
 
-    public OrderDto createOrder(OrderDto orderDto) {
+    public Optional<Long> createOrder(OrderDto orderDto) {
         Long bookId = orderDto.getBookId();
         Long userId = orderDto.getUserId();
         Boolean bookTaken = userServiceClient.checkBookTaken(userId);
         Long bookQuantity = storageServiceClient.getBookQuantity(bookId);
         if (bookTaken && bookQuantity < 1) {
-            orderDto.setOrderStatus(OrderStatus.DENIED);
+            return Optional.empty();
         } else {
             storageServiceClient.pickUp(bookId);
             userServiceClient.setBookTaken(userId);
             orderDto.setOrderStatus(OrderStatus.CREATED);
+            Order order = orderRepository.save(OrderDto.toModel(orderDto));
+            return Optional.of(order.getId());
         }
-        return OrderDto.fromModel(orderRepository.save(OrderDto.toModel(orderDto)));
     }
 }
