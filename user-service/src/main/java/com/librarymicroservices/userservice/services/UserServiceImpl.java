@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         UserEntity user = UserDTO.toEntity(userDTO);
@@ -51,8 +52,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkIsBookTaken(UserDTO userDTO) {
-        Optional<UserEntity> user = userRepository.findById(userDTO.getId());
+    public boolean checkIsBookTaken(Long id) {
+        Optional<UserEntity> user = userRepository.findById(id);
         return user.isPresent() ? user.get().getIsBookTaken() : false;
+    }
+
+    @Override
+    public boolean setBookTaken(Long id, boolean bookTaken) {
+        Optional<UserEntity> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setIsBookTaken(bookTaken);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

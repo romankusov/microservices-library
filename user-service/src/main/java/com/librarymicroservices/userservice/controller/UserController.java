@@ -45,4 +45,19 @@ public class UserController {
     public ResponseEntity<Void> updateUser(@RequestBody UserDTO userDTO) {
         return userService.updateUser(userDTO) ? ResponseEntity.accepted().build() : ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/taken/{id}/set")
+    public ResponseEntity<Void> setBookTaken(@PathVariable Long id) {
+        return userService.setBookTaken(id, true) ? ResponseEntity.accepted().build() : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/taken/{id}/reset")
+    public ResponseEntity<Void> resetBookTaken(@PathVariable Long id) {
+        return userService.setBookTaken(id, false) ? ResponseEntity.accepted().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/taken/{id}")
+    public Boolean checkBookTaken(@PathVariable Long id) {
+        return userService.checkIsBookTaken(id);
+    }
 }
