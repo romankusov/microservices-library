@@ -19,8 +19,6 @@ public interface StorageService {
 
     boolean updateBook(BookDTO bookDTO);
 
-    boolean decrementBookQuantity(Long id);
-
     Optional<BookDTO> getBookById(Long id);
 
     void returnBook(Long id);

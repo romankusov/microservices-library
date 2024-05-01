@@ -29,14 +29,10 @@ public class StorageController {
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
         Optional<BookDTO> optionalBookDTO = storageService.getBookById(id);
-        if (optionalBookDTO.isPresent()) {
-            return ResponseEntity.ok(optionalBookDTO.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return optionalBookDTO.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/pick_up/{id}")
+    @PostMapping("/pick_up/{id}")
     public void pickUp(@PathVariable long id) {
         storageService.pickUp(id);
     }
@@ -46,7 +42,7 @@ public class StorageController {
         return Long.valueOf(storageService.getBookQuantity(id));
     }
 
-    @GetMapping("/return/{id}")
+    @PostMapping("/return/{id}")
     public void returnBook(@PathVariable long id) {
         storageService.returnBook(id);
     }
