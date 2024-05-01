@@ -15,9 +15,16 @@ public interface StorageService {
 
     List<BookDTO> getAllBooks();
 
-    Optional<BookDTO> getBookById(Long id);
+    void pickUp(Long id);
 
     boolean updateBook(BookDTO bookDTO);
 
     boolean decrementBookQuantity(Long id);
+
+    Optional<BookDTO> getBookById(Long id);
+
+    void returnBook(Long id);
+
+    Integer getBookQuantity(Long id);
+
 }

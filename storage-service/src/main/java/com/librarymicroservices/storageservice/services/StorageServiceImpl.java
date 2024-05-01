@@ -24,9 +24,15 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<BookDTO> getBookById(Long id) {
-        return storageRepository.findById(id).map(BookDTO::fromModel);
+    public void pickUp(Long id) {
+        Optional<BookEntity> optionalBookEntity = storageRepository.findById(id);
+        optionalBookEntity.ifPresent(bookEntity -> {
+            int quantity = bookEntity.getQuantity();
+            if (quantity > 0) {
+                bookEntity.setQuantity(quantity - 1);
+                storageRepository.save(bookEntity);
+            }
+        });
     }
 
     @Override
@@ -63,6 +69,27 @@ public class StorageServiceImpl implements StorageService {
             }
         }
         return false;
+    }
+
+    @Override
+    public Optional<BookDTO> getBookById(Long id) {
+        return storageRepository.findById(id).map(BookDTO::fromModel);
+    }
+
+    @Override
+    public void returnBook(Long id) {
+        Optional<BookEntity> optionalBookEntity = storageRepository.findById(id);
+        optionalBookEntity.ifPresent(bookEntity -> {
+            int quantity = bookEntity.getQuantity();
+            bookEntity.setQuantity(quantity + 1);
+            storageRepository.save(bookEntity);
+        });
+    }
+
+
+    @Override
+    public Integer getBookQuantity(Long id) {
+        return storageRepository.findById(id).map(BookEntity::getQuantity).orElse(0);
     }
 
 }
