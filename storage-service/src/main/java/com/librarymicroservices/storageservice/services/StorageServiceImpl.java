@@ -57,21 +57,6 @@ public class StorageServiceImpl implements StorageService {
 
 
     @Override
-    public boolean decrementBookQuantity(Long id) {
-        Optional<BookEntity> optionalBookEntity = storageRepository.findById(id);
-        if (optionalBookEntity.isPresent()) {
-            BookEntity bookEntity = optionalBookEntity.get();
-            int currentQuantity = bookEntity.getQuantity();
-            if (currentQuantity > 0) {
-                bookEntity.setQuantity(currentQuantity - 1);
-                storageRepository.save(bookEntity);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public Optional<BookDTO> getBookById(Long id) {
         return storageRepository.findById(id).map(BookDTO::fromModel);
     }
