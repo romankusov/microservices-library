@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 0
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
@@ -16,7 +16,7 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
   application:
     name: user-service
 logging:
@@ -24,3 +24,7 @@ logging:
     org.springframework.web: DEBUG
     org.hibernate:
       SQL: DEBUG
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
