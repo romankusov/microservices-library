@@ -1,18 +1,35 @@
+server:
+  port: 8081
+
 spring:
+  application:
+    name: api-gateway
+  config:
+    import: "optional:configserver:"
   cloud:
-    config:
-      enabled: false
     gateway:
-      routes:
-        - id: user-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/api/userService/**
-        - id: order-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/orderService/**
-        - id: storage-service
-          uri: http://localhost:8083
-          predicates:
-            - Path=/api/storageService/**
+      mvc:
+        routes:
+          - id: user-service
+            uri: lb://user-service
+            predicates:
+              - Path=api/users/**
+          - id: order-service
+            uri: lb://order-service
+            predicates:
+              - Path=api/orders/**
+          - id: storage-service
+            uri: lb://storage-service
+            predicates:
+              - Path=api/storage/**
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+
+logging:
+  level:
+    root: debug

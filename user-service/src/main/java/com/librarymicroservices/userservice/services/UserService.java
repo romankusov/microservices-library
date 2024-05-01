@@ -11,11 +11,13 @@ public interface UserService {
 
     boolean deleteUser(Long id);
 
-    boolean checkIsBookTaken(UserDTO userDTO);
+    boolean checkIsBookTaken(Long id);
 
     List<UserDTO> getAllUsers();
 
     Optional<UserDTO> getUserById(Long id);
 
     boolean updateUser(UserDTO userDTO);
+
+    boolean setBookTaken(Long id, boolean bookTaken);
 }

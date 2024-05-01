@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Modifying
-    @Query(value = "DELETE FROM UserEntity u where u.id = ?1")
-    Long customDeleteById(Long id);
+    @Query(value = "DELETE FROM UserEntity u WHERE u.id = ?1")
+    Integer customDeleteById(Long id);
 }
