@@ -54,4 +54,4 @@
 ### /api/orders/return/{id} POST
 Метод заврешает заказ (заказ получает статус RETURNED). Также вносятся соответствующие изменния в user service и storage service
 # Стек
-Java 17, Spring Boot, Spring Data, Spring Cloud, JUnit, PostgreSQL, Mockito, TestContainers
+Java 17, Spring Boot, Spring Data, Spring Cloud, JUnit, PostgreSQL, Mockito, TestContainers, RestFUL API
