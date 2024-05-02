@@ -61,7 +61,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getAllUsers() throws Exception {
+    void shouldReturnAllUsers() throws Exception {
         mockMvc.perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -77,7 +77,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserById() throws Exception {
+    void shouldReturnUserById() throws Exception {
         mockMvc.perform(get("/api/users/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -90,7 +90,7 @@ class UserControllerTest {
     }
 
     @Test
-    void createUser() throws Exception {
+    void shouldCreateNewUser() throws Exception {
         mockMvc.perform(post("/api/users").contentType(MediaType.APPLICATION_JSON)
                 .content("""
                                 {
@@ -105,7 +105,7 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUser() throws Exception {
+    void shouldDeleteUser() throws Exception {
         //given
         UserDTO userDTOForDelete = new UserDTO();
         userDTOForDelete.setId(3L);
@@ -122,7 +122,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updateUser() throws Exception {
+    void shouldUpdateUser() throws Exception {
         mockMvc.perform(put("/api/users").contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -135,19 +135,19 @@ class UserControllerTest {
     }
 
     @Test
-    void setBookTaken() throws Exception {
+    void shouldSetFlagBookTaken() throws Exception {
         mockMvc.perform(post("/api/users/taken/1/set").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isAccepted());
     }
 
     @Test
-    void resetBookTaken() throws Exception {
+    void shouldResetFlagBookTaken() throws Exception {
         mockMvc.perform(post("/api/users/taken/1/reset").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isAccepted());
     }
 
     @Test
-    void checkBookTaken() throws Exception {
+    void shouldCheckFlagBookTaken() throws Exception {
         mockMvc.perform(get("/api/users/taken/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().string("false"));
     }
