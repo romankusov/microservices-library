@@ -27,7 +27,7 @@
 ### /api/users/taken/{id} GET
 Также специальный метод для взаимодействия с order service по feign client. При помощи данного метода order service проверяет, есть ли невозвращенные книги у пользователя, и, следовательно, может ли он взять новую книгу
 ## Storage service
-Сервис, отвечающий за раюоту с книгохранилищем. Команды API:
+Сервис, отвечающий за работу с книгохранилищем. Команды API:
 ### /api/storage GET
 Метод без параметров. Возвращает список всех книг и их количество 
 ### /api/storage {id} GET
@@ -54,4 +54,4 @@
 ### /api/orders/return/{id} POST
 Метод заврешает заказ (заказ получает статус RETURNED). Также вносятся соответствующие изменния в user service и storage service
 # Стек
-Java 17, Spring Boot, Spring Data, Spring Cloud, JUnit, PostgreSQL, Mockito, TestContainers, RestFUL API
+Java 17, Spring Boot, Spring Data, Spring Cloud, JUnit, PostgreSQL, Mockito, TestContainers, REST
